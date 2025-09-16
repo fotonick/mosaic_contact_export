@@ -4,7 +4,7 @@ use scraper::{ElementRef, Html, Selector};
 
 use crate::types::Person;
 
-pub fn scrape_people_from_str(body: &str) -> Result<Vec<Person>> {
+pub fn scrape_people_from_str(body: &str, address_completion: &str) -> Result<Vec<Person>> {
     let mut people = Vec::new();
     let fragment = Html::parse_fragment(body);
     let row_selector =
@@ -16,9 +16,8 @@ pub fn scrape_people_from_str(body: &str) -> Result<Vec<Person>> {
         if field.len() >= 10 { Some(field) } else { None }
     }
 
-    fn expand_addr(elem: ElementRef) -> String {
-        format!("{} NE Going St, Portland, OR 97218", elem.inner_html()).to_string()
-    }
+    let expand_addr =
+        move |elem: ElementRef| format!("{} {}", elem.inner_html(), address_completion).to_string();
 
     let email_selector = Selector::parse("a").unwrap();
     let extract_email = move |elem: ElementRef| {
