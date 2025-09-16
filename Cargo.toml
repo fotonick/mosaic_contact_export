@@ -1,5 +1,5 @@
 [package]
-name = "cg_contacts"
+name = "mosaic_contact_export"
 version = "0.1.0"
 edition = "2024"
 
@@ -9,4 +9,4 @@ calcard = "0.2.0"
 itertools = "0.14.0"
 pretty_env_logger = "0.5.0"
 scraper = "0.24.0"
-ureq = { version = "3.1.2", features = ["cookies", "gzip", "json"] }
+ureq = { version = "3.1.2", features = ["cookies"] }

@@ -47,14 +47,13 @@ impl MosaicSite {
         let request = self
             .agent
             .post(&format!("{}/j_security_check", self.base_url))
-            .header("cookie", &format!("JSESSIONID={}", session_id))
-            .header("cookie", "setuuid=true");
+            .header("cookie", &format!("JSESSIONID={}", session_id));
         let response = request.send_form([("j_username", username), ("j_password", password)])?;
         if !matches!(response.status(), StatusCode::SEE_OTHER) {
             return Err(anyhow!("Invalid username or password"));
         }
 
-        // 3. As long as we use the same session ID and it doesn't expire, we can do authenticated actions
+        // 3. As long as we use the same session ID and it doesn't expire, we can do authenticated actions.
         Ok(LoggedInMosaicSite {
             base_url: self.base_url,
             agent: self.agent,
